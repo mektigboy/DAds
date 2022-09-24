@@ -32,23 +32,17 @@ export default function AppHeader() {
   return (
     <header className="flex items-center py-4 pl-12 pr-4">
       <div className="flex-1 h-12">
-        <Link href="/" replace>
-          <a>
-            <img className="h-full" src="logo.png" />
-          </a>
+        <Link href="/">
+          <img className="h-full" src="logo.png" />
         </Link>
       </div>
       <div className="mx-12">
         <ul className="flex">
           <li className="text-blue-500 hover:text-blue-400 mx-6">
-            <Link href="/" replace>
-              New Campaign
-            </Link>
+            <Link href="/">New Campaign</Link>
           </li>
           <li className="text-blue-500 hover:text-blue-400">
-            <Link href="/about" replace>
-              About Us
-            </Link>
+            <Link href="/about">About Us</Link>
           </li>
         </ul>
       </div>
