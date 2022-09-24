@@ -11,6 +11,8 @@ export default function Home() {
 
   const client = new NFTStorage({ token: NFT_STORAGE_API_KEY });
 
+  const router = useRouter();
+
   const [campaignName, setCampaignName] = useState("");
   const [image, setImage] = useState(undefined);
   const [websiteName, setWebsiteName] = useState("");
@@ -47,27 +49,6 @@ export default function Home() {
     setIsMinted(true);
   }
 
-  async function handleSubmitLater() {
-    setForm({
-      ...mintForm,
-      demography,
-      budget,
-      startDate,
-      endDate,
-      draft: true,
-    });
-
-    await dbInstance.load();
-    dbInstance.add({
-      ...mintForm,
-      demography,
-      budget,
-      startDate,
-      endDate,
-      draft: true,
-    });
-  }
-
   async function handleSubmitForReview(e) {
     e.preventDefault();
     setForm({
@@ -76,10 +57,7 @@ export default function Home() {
       budget,
       startDate,
       endDate,
-      draft: false,
     });
-
-    const router = useRouter();
 
     createIPFSInstance().then((ipfs) => {
       console.log(ipfs);
@@ -96,7 +74,7 @@ export default function Home() {
           draft: false,
         });
 
-        router.push("/campaigns");
+        router.replace("/campaigns");
       });
     });
   }
@@ -280,13 +258,6 @@ export default function Home() {
                 </div>
               </div>
               <div className="my-4">
-                <button
-                  className="text-blue-500 hover:text-blue-400 disabled:opacity-25 px-6 py-3 rounded-lg w-1/2"
-                  type="button"
-                  onClick={handleSubmitLater}
-                >
-                  Submit later
-                </button>
                 <button
                   className="bg-blue-500 hover:bg-blue-400 disabled:opacity-25 text-white px-6 py-3 rounded-lg w-1/2"
                   type="submit"
