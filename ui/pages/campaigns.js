@@ -3,10 +3,23 @@ import OrbitDB from "orbit-db";
 import AppHeader from "../components/AppHeader";
 import { createIPFSInstance } from "../database";
 import Link from "next/link";
+import ABI from "../utils/abi.json";
 export default function Campaigns() {
   const [campaigns, setCampaigns] = useState([]);
 
   useEffect(() => {
+    const ethers = require("ethers");
+    (async () => {
+      const provider = new ethers.providers.JsonRpcProvider("https://floral-attentive-choice.optimism-goerli.discover.quiknode.pro/fd2865138bfd176038a2da7452a6143b4b9e6175/");
+      const contract = new ethers.Contract(
+        "0xD33101B54f74DadA4b8e0e92c5792D9600DBFE09",
+        ABI,
+        provider
+      );
+      const website = await contract.getCampaignWebsite();
+      const image = await contract.getCampaignImage();
+    })();
+    
     createIPFSInstance().then((ipfs) => {
       console.log(ipfs);
       OrbitDB.createInstance(ipfs).then(async (orbitdb) => {
