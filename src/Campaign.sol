@@ -32,7 +32,7 @@ contract Campaign {
     string private s_image;
     string private s_name;
     string private s_website;
-    string[10] private s_keywords;
+    string[3] private s_keywords;
     string private s_demography;
     uint256 private s_budget;
     uint256 private s_duration;
