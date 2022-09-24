@@ -87,4 +87,16 @@ contract CampaignFactory {
     {
         return s_deployedCampaigns[campaignId];
     }
+
+    /////////////
+    /// OWNER ///
+    /////////////
+
+    function registerAdmin(address newAdmin) public onlyOwner {
+        s_isAdmin[newAdmin] = true;
+    }
+
+    function deleteAdmin(address admin) public onlyOwner {
+        s_isAdmin[admin] = false;
+    }
 }
