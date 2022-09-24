@@ -1,6 +1,9 @@
-import { useState } from "react";
-import { NFTStorage, File, Blob } from "nft.storage";
+import { useState, useEffect } from "react";
+import { NFTStorage } from "nft.storage";
 import AppHeader from "../components/AppHeader";
+import { createIPFSInstance } from "../database";
+import OrbitDB from "orbit-db";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const NFT_STORAGE_API_KEY =
@@ -33,19 +36,18 @@ export default function Home() {
     e.preventDefault();
     setIsLoading(true);
 
+    const metadata = await storeImage(image);
+    setImageMetadata(metadata);
     setMintForm({
       campaignName,
-      image,
+      image: metadata.data?.image?.href,
       websiteName,
       keywords,
     });
-
-    const metadata = await storeImage(image);
-    setImageMetadata(metadata);
     setIsMinted(true);
   }
 
-  function handleSubmitLater() {
+  async function handleSubmitLater() {
     setForm({
       ...mintForm,
       demography,
@@ -55,7 +57,8 @@ export default function Home() {
       draft: true,
     });
 
-    console.log({
+    await dbInstance.load();
+    dbInstance.add({
       ...mintForm,
       demography,
       budget,
@@ -65,7 +68,7 @@ export default function Home() {
     });
   }
 
-  function handleSubmitForReview(e) {
+  async function handleSubmitForReview(e) {
     e.preventDefault();
     setForm({
       ...mintForm,
@@ -75,13 +78,26 @@ export default function Home() {
       endDate,
       draft: false,
     });
-    console.log({
-      ...mintForm,
-      demography,
-      budget,
-      startDate,
-      endDate,
-      draft: false,
+
+    const router = useRouter();
+
+    createIPFSInstance().then((ipfs) => {
+      console.log(ipfs);
+      OrbitDB.createInstance(ipfs).then(async (orbitdb) => {
+        console.log(orbitdb);
+        const db = await orbitdb.feed("testdb");
+        await db.load();
+        db.add({
+          ...mintForm,
+          demography,
+          budget,
+          startDate,
+          endDate,
+          draft: false,
+        });
+
+        router.push("/campaigns");
+      });
     });
   }
 
