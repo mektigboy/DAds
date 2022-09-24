@@ -5,7 +5,7 @@ export default function AboutUs() {
     <div>
       <AppHeader />
       <section className="mx-auto my-10 w-2/3">
-        <div>
+        <div className="flex justify-center">
           <img src="about.png" />
         </div>
       </section>
