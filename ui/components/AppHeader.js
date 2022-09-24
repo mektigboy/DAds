@@ -12,7 +12,6 @@ export default function AppHeader() {
       if (accounts.length > 0) {
         setCurrentWalletAddress(accounts[0]);
       }
-    } else {
     }
   }
 
@@ -26,9 +25,12 @@ export default function AppHeader() {
       <div className="mx-12">
         <ul className="flex">
           <li className="text-blue-500 hover:text-blue-400 mx-6">
+            <Link href="/about">Campaigns</Link>
+          </li>
+          <li className="text-blue-500 hover:text-blue-400 mx-6">
             <Link href="/">New Campaign</Link>
           </li>
-          <li className="text-blue-500 hover:text-blue-400">
+          <li className="text-blue-500 hover:text-blue-400 mx-6">
             <Link href="/about">About Us</Link>
           </li>
         </ul>
