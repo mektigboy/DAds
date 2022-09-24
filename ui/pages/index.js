@@ -52,21 +52,37 @@ export default function Home() {
       budget,
       startDate,
       endDate,
+      draft: true,
     });
 
-    console.log({ ...form, draft: true });
+    console.log({
+      ...mintForm,
+      demography,
+      budget,
+      startDate,
+      endDate,
+      draft: true,
+    });
   }
 
-  function handleSubmitForReview() {
+  function handleSubmitForReview(e) {
+    e.preventDefault();
     setForm({
       ...mintForm,
       demography,
       budget,
       startDate,
       endDate,
+      draft: false,
     });
-
-    console.log({ ...form, draft: false });
+    console.log({
+      ...mintForm,
+      demography,
+      budget,
+      startDate,
+      endDate,
+      draft: false,
+    });
   }
 
   async function storeImage(imageFile) {
