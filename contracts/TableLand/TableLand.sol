@@ -1,5 +1,6 @@
-pragma solidity ^0.8.12;
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.12;
+
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@tableland/evm/contracts/ITablelandTables.sol";
 import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
@@ -14,7 +15,7 @@ contract ETHOnline is ERC721Holder
 
     constructor(address _registry) payable
     {
-        _tablePrefix="ethonline";
+        _tablePrefix="dads";
         _tableland=ITablelandTables(_registry);
         _counter=0;
     }
@@ -23,11 +24,11 @@ contract ETHOnline is ERC721Holder
         _tableId= _tableland.createTable(
             address(this),
              string.concat(
-                 "CREATE TABLE",
+                 "CREATE TABLE ",
                  _tablePrefix,
                  "_",
                   StringsUpgradeable.toString(block.chainid),
-                 "(id int primary key,uri text,addr text); "
+                 " (id int primary key, uri text, addr text);"
              )
         );
 
@@ -44,9 +45,11 @@ contract ETHOnline is ERC721Holder
             address(this),
             _tableId,
             string.concat(
-                "INSERT INTO",
+                "INSERT INTO ",
                   tableName,
-                " (id,uri ,addr ) VALUES(", StringsUpgradeable.toString(_counter), ",'",uri, ",'", addr,"')"
+                " (id, uri , addr) VALUES(",
+                StringsUpgradeable.toString(_counter), 
+                  ", '" ,uri, "', '",addr ,"')"
             )
         );
          _counter=_counter+1;
