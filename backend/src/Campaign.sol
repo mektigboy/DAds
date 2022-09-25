@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import "./lib/ERC721.sol";
+
 error Campaign__OnlyCampaignManager();
 
 /// @title Campaign
