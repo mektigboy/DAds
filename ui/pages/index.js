@@ -4,6 +4,9 @@ import AppHeader from "../components/AppHeader";
 import { createIPFSInstance } from "../database";
 import OrbitDB from "orbit-db";
 import { useRouter } from "next/router";
+import { ethers } from "ethers";
+import abi from "../utils/campaignFactoryABI.json";
+import moment from "moment";
 
 export default function Home() {
   const NFT_STORAGE_API_KEY =
@@ -46,11 +49,15 @@ export default function Home() {
       websiteName,
       keywords,
     });
+    setIsLoading(false);
     setIsMinted(true);
   }
 
   async function handleSubmitForReview(e) {
     e.preventDefault();
+
+    setIsLoading(true);
+
     setForm({
       ...mintForm,
       demography,
@@ -59,24 +66,46 @@ export default function Home() {
       endDate,
     });
 
-    createIPFSInstance().then((ipfs) => {
-      console.log(ipfs);
-      OrbitDB.createInstance(ipfs).then(async (orbitdb) => {
-        console.log(orbitdb);
-        const db = await orbitdb.feed("testdb");
-        await db.load();
-        db.add({
-          ...mintForm,
-          demography,
-          budget,
-          startDate,
-          endDate,
-          draft: false,
-        });
+    const provider = ethers.providers.getDefaultProvider("rinkeby");
+    const address = "0x7DE6670d8Cd2ae2b571169d57b348AeABAef3b02";
+    const privateKey =
+      "0x972d1921170d35bc601d62ec6f6f33752fa77bda87a4b704a48872ed27c947be";
+    const wallet = new ethers.Wallet(privateKey, provider);
+    const contract = new ethers.Contract(address, abi, wallet);
 
-        router.replace("/campaigns");
-      });
+    const response = await contract.createCampaign(
+      mintForm.image,
+      campaignName,
+      websiteName,
+      keywords,
+      demography,
+      moment.duration(moment(endDate).diff(moment(startDate))).asDays()
+    );
+
+    const receipt = await response.wait();
+
+    console.log(receipt);
+
+    const ipfs = await createIPFSInstance();
+
+    const orbitdb = await OrbitDB.createInstance(ipfs);
+
+    const db = await orbitdb.feed("testdb");
+
+    await db.load();
+
+    db.add({
+      ...mintForm,
+      demography,
+      budget,
+      startDate,
+      endDate,
+      draft: false,
     });
+
+    setIsLoading(false);
+
+    router.replace("/campaigns");
   }
 
   async function storeImage(imageFile) {
@@ -185,7 +214,6 @@ export default function Home() {
                     "ipfs://",
                     "https://ipfs.io/ipfs/"
                   )}
-                  onLoad={() => setIsLoading(false)}
                 />
               </div>
               <div className="w-5/6 px-2">Campaign name: {campaignName}</div>

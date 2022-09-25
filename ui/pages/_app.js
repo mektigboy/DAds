@@ -1,7 +1,27 @@
+import Head from "next/head";
 import "../styles/globals.css";
-import { create as ipfsCreate } from "ipfs";
+const noOverlayWorkaroundScript = `
+    window.addEventListener('error', event => {
+      event.stopImmediatePropagation()
+    })
+
+    window.addEventListener('unhandledrejection', event => {
+      event.stopImmediatePropagation()
+    })
+  `;
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Head>
+        {process.env.NODE_ENV !== "production" && (
+          <script
+            dangerouslySetInnerHTML={{ __html: noOverlayWorkaroundScript }}
+          />
+        )}
+      </Head>
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 export default MyApp;
