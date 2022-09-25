@@ -85,10 +85,12 @@ export default function Home() {
     );
 
     const receipt = await response.wait();
-    const campaignId=await contract.getCampaignId();
-  
-   
-    const deployedCampaign= await contract.getDeployedCampaigns(campaignId.toNumber() - 1 ) ;
+
+    const campaignId = await contract.getCampaignId();
+
+    const deployedCampaign = await contract.getDeployedCampaigns(
+      campaignId.toNumber() - 1
+    );
 
     const ipfs = await createIPFSInstance();
 
@@ -105,10 +107,12 @@ export default function Home() {
       startDate,
       endDate,
       deployedCampaign,
-      campaignId: campaignId.toNumber() - 1
+      campaignId: campaignId.toNumber() - 1,
     });
-    setTimeout(()=>{    router.replace("/campaigns")},3000)
 
+    setTimeout(() => {
+      router.replace("/campaigns");
+    }, 5000);
   }
 
   async function storeImage(imageFile) {

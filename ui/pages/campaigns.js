@@ -8,20 +8,6 @@ export default function Campaigns() {
   const [campaigns, setCampaigns] = useState([]);
 
   useEffect(() => {
-    const ethers = require("ethers");
-    (async () => {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://floral-attentive-choice.optimism-goerli.discover.quiknode.pro/fd2865138bfd176038a2da7452a6143b4b9e6175/"
-      );
-      const contract = new ethers.Contract(
-        "0xD33101B54f74DadA4b8e0e92c5792D9600DBFE09",
-        campaignAbi,
-        provider
-      );
-      const website = await contract.getCampaignWebsite();
-      const image = await contract.getCampaignImage();
-    })();
-
     createIPFSInstance().then((ipfs) => {
       OrbitDB.createInstance(ipfs).then(async (orbitdb) => {
         const db = await orbitdb.feed("testdb");
@@ -48,17 +34,14 @@ export default function Campaigns() {
                 <th className="p-4 text-left">Start Date</th>
                 <th className="p-4 text-left">End Date</th>
                 <th className="p-4 text-left">Deployed Campaign</th>
+                <th className="p-4 text-left">Counter</th>
               </tr>
             </thead>
             <tbody>
               {campaigns.map((campaign, campaignIndex) => (
                 <tr key={campaignIndex}>
                   <td className="px-4 py-2">
-                    <Link href={`campaign/${campaign.hash}`}>
-                      <span className="cursor-pointer text-blue-500 hover:text-blue-400">
-                        {campaign.payload.value.campaignName}
-                      </span>
-                    </Link>
+                    {campaign.payload.value.campaignName}
                   </td>
                   <td className="px-4 py-2">
                     {campaign.payload.value.websiteName}
@@ -79,10 +62,16 @@ export default function Campaigns() {
                     {campaign.payload.value.endDate}
                   </td>
                   <td className="px-4 py-2">
-                    {campaign.payload.value.deployedCampaign}
+                    <Link
+                      href={`snippet/${campaign.payload.value.deployedCampaign}`}
+                    >
+                      <span className="cursor-pointer text-blue-500 hover:text-blue-400">
+                        {campaign.payload.value.deployedCampaign}
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-4 py-2">
-                    {campaign.payload.value.campaignId }
+                    {campaign.payload.value.campaignId}
                   </td>
                 </tr>
               ))}

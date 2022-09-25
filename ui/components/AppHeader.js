@@ -19,7 +19,7 @@ export default function AppHeader() {
     <header className="flex items-center py-4 pl-12 pr-4">
       <div className="flex-1 h-12">
         <Link href="/">
-          <img className="h-full" src="logo.png" />
+          <img className="cursor-pointer h-full" src="/logo.png" />
         </Link>
       </div>
       <div className="mx-12">
