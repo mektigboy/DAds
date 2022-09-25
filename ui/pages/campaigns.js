@@ -71,7 +71,13 @@ export default function Campaigns() {
                     </Link>
                   </td>
                   <td className="px-4 py-2">
-                    {campaign.payload.value.campaignId}
+                    <Link
+                      href={`snippet/${campaign.payload.value.campaignId}`}
+                    >
+                      <span className="cursor-pointer text-blue-500 hover:text-blue-400">
+                      {campaign.payload.value.campaignId}
+                      </span>
+                    </Link>
                   </td>
                 </tr>
               ))}

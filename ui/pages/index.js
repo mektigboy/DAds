@@ -92,15 +92,16 @@ export default function Home() {
     const deployedCampaign = await contract.getDeployedCampaigns(
       campaignId.toNumber() - 1
     );
-    /* 
-    const addressTableLand = "";
+  
+    const addressTableLand = "0xfC67a583DaE15bE0CD69698b86d711d4ACb81117";
     const contractTableLand = new ethers.Contract(addressTableLand, tablelandAbi, wallet);
+
     const responseTableLand = await contractTableLand.insertInto(
       websiteName,
       mintForm.image,
-      campaignId
+      campaignId -1
     );
-   */
+
     const ipfs = await createIPFSInstance();
 
     const orbitdb = await OrbitDB.createInstance(ipfs);

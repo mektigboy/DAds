@@ -10,43 +10,52 @@ export default function Snippet() {
   const [campaign, setCampaign] = useState({});
 
   async function getCampaign(_contract) {
-    /*
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+    if (!isNaN(_contract)) {
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://floral-attentive-choice.optimism-goerli.discover.quiknode.pro/fd2865138bfd176038a2da7452a6143b4b9e6175/"
+      );
+      const contract = new ethers.Contract(_contract, campaignAbi, provider);
+      const website = await contract.getCampaignWebsite();
+      const image = await contract.getCampaignImage();
+  
+      setCampaign({ website, image });
+  
+      return campaign;
+    }
+    else
+    {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = await JSON.stringify({
+        "jsonrpc": "2.0",
+        "method": "tableland_runReadQuery",
+        "id": 1,
+        "params": [
+          {
+            "statement": "SELECT * FROM dads_420_134 WHERE campaignId=" + 22
+          }
+        ]
+      });
 
-        var raw = JSON.stringify({
-          "jsonrpc": "2.0",
-          "method": "tableland_runReadQuery",
-          "id": 1,
-          "params": [
-            {
-              "statement": "SELECT * FROM dads_420_133"
-            }
-          ]
-        });
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+    
+      
+      fetch("https://testnet.tableland.network/rpc", requestOptions)
+        .then(response => response.json())
+        .then(result =>{
+          let image= result.result.data[0].image;
+          let website= result.result.data[0].website;
+          setCampaign({ website, image });
+        }
+          )
+        .catch(error => console.log('error', error));
+    }
 
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: raw,
-          redirect: 'follow'
-        };
-
-        fetch("https://testnet.tableland.network/rpc", requestOptions)
-          .then(response => response.text())
-          .then(result => console.log(result))
-          .catch(error => console.log('error', error));
-    */
-    const provider = new ethers.providers.JsonRpcProvider(
-      "https://floral-attentive-choice.optimism-goerli.discover.quiknode.pro/fd2865138bfd176038a2da7452a6143b4b9e6175/"
-    );
-    const contract = new ethers.Contract(_contract, campaignAbi, provider);
-    const website = await contract.getCampaignWebsite();
-    const image = await contract.getCampaignImage();
-
-    setCampaign({ website, image });
-
-    return campaign;
   }
 
   useEffect(() => {
