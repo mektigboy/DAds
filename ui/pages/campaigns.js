@@ -21,7 +21,7 @@ export default function Campaigns() {
   return (
     <div>
       <AppHeader />
-      <section className="mx-auto my-10 w-2/3">
+      <section className="mx-auto my-10 w-10/12">
         <div className="border border-gray-300 rounded-lg">
           <table className="table-auto w-full">
             <thead className="bg-gray-300">
