@@ -28,7 +28,7 @@ contract ETHOnline is ERC721Holder
                  _tablePrefix,
                  "_",
                   StringsUpgradeable.toString(block.chainid),
-                 " (id int primary key, uri text, addr text);"
+                 " (id int primary key, website text, image text , campaignId int);"
              )
         );
 
@@ -40,32 +40,30 @@ contract ETHOnline is ERC721Holder
                 StringsUpgradeable.toString(_tableId)
             );
     }
-    function insertInto(string memory uri,string memory addr) external payable {
+    function insertInto(string memory website,string memory image,uint256 campaignId) external payable {
         _tableland.runSQL(
             address(this),
             _tableId,
             string.concat(
                 "INSERT INTO ",
                   tableName,
-                " (id, uri , addr) VALUES(",
-                StringsUpgradeable.toString(_counter), 
-                  ", '" ,uri, "', '",addr ,"')"
+                " (id, website , image , campaignId) VALUES(",StringsUpgradeable.toString(_counter),", '" ,website, "', '" ,image, "', ", StringsUpgradeable.toString(campaignId), ")"
             )
         );
          _counter=_counter+1;
     }
 
-     function update(string memory uri,uint256 id) external payable {
+     function update(string memory image,uint256 campaignId) external payable {
         _tableland.runSQL(
             address(this),
             _tableId,
             string.concat(
             "UPDATE ",
             tableName,
-            " SET uri = ",
-            uri,
+            " SET image = ",
+            "'" ,image,"'"
             " WHERE id = ",
-            StringsUpgradeable.toString(id),
+            StringsUpgradeable.toString(campaignId),
             ";"
             )
         );

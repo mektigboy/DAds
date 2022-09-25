@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import abi from "../utils/campaignFactoryABI.json";
 import moment from "moment";
+import tablelandAbi from "../utils/tableLand.json";
 
 export default function Home() {
   const NFT_STORAGE_API_KEY =
@@ -91,7 +92,15 @@ export default function Home() {
     const deployedCampaign = await contract.getDeployedCampaigns(
       campaignId.toNumber() - 1
     );
-
+    /* 
+    const addressTableLand = "";
+    const contractTableLand = new ethers.Contract(addressTableLand, tablelandAbi, wallet);
+    const responseTableLand = await contractTableLand.insertInto(
+      websiteName,
+      mintForm.image,
+      campaignId
+    );
+   */
     const ipfs = await createIPFSInstance();
 
     const orbitdb = await OrbitDB.createInstance(ipfs);
