@@ -10,6 +10,33 @@ export default function Snippet() {
   const [campaign, setCampaign] = useState({});
 
   async function getCampaign(_contract) {
+    /*
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          "jsonrpc": "2.0",
+          "method": "tableland_runReadQuery",
+          "id": 1,
+          "params": [
+            {
+              "statement": "SELECT * FROM dads_420_133"
+            }
+          ]
+        });
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        fetch("https://testnet.tableland.network/rpc", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+    */
     const provider = new ethers.providers.JsonRpcProvider(
       "https://floral-attentive-choice.optimism-goerli.discover.quiknode.pro/fd2865138bfd176038a2da7452a6143b4b9e6175/"
     );
