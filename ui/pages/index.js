@@ -66,8 +66,10 @@ export default function Home() {
       endDate,
     });
 
-    const provider = ethers.providers.getDefaultProvider("rinkeby");
-    const address = "0x7DE6670d8Cd2ae2b571169d57b348AeABAef3b02";
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://floral-attentive-choice.optimism-goerli.discover.quiknode.pro/fd2865138bfd176038a2da7452a6143b4b9e6175/"
+    );
+    const address = "0x8c43386F4e5c8a8F0b67798FAf9D0BBEe83Ff344";
     const privateKey =
       "0x972d1921170d35bc601d62ec6f6f33752fa77bda87a4b704a48872ed27c947be";
     const wallet = new ethers.Wallet(privateKey, provider);
@@ -83,8 +85,10 @@ export default function Home() {
     );
 
     const receipt = await response.wait();
-
-    console.log(receipt);
+    const campaignId=await contract.getCampaignId();
+  
+   
+    const deployedCampaign= await contract.getDeployedCampaigns(campaignId.toNumber() - 1 ) ;
 
     const ipfs = await createIPFSInstance();
 
@@ -94,18 +98,17 @@ export default function Home() {
 
     await db.load();
 
-    db.add({
+    await db.add({
       ...mintForm,
       demography,
       budget,
       startDate,
       endDate,
-      draft: false,
+      deployedCampaign,
+      campaignId: campaignId.toNumber() - 1
     });
+    setTimeout(()=>{    router.replace("/campaigns")},3000)
 
-    setIsLoading(false);
-
-    router.replace("/campaigns");
   }
 
   async function storeImage(imageFile) {

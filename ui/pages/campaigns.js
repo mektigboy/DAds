@@ -47,6 +47,7 @@ export default function Campaigns() {
                 <th className="p-4 text-left">Budget</th>
                 <th className="p-4 text-left">Start Date</th>
                 <th className="p-4 text-left">End Date</th>
+                <th className="p-4 text-left">Deployed Campaign</th>
               </tr>
             </thead>
             <tbody>
@@ -76,6 +77,12 @@ export default function Campaigns() {
                   </td>
                   <td className="px-4 py-2">
                     {campaign.payload.value.endDate}
+                  </td>
+                  <td className="px-4 py-2">
+                    {campaign.payload.value.deployedCampaign}
+                  </td>
+                  <td className="px-4 py-2">
+                    {campaign.payload.value.campaignId }
                   </td>
                 </tr>
               ))}
